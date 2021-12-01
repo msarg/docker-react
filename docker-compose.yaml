@@ -1,0 +1,24 @@
+version: "3"
+services:
+  web:
+    # build: ./Dockerfile.dev ##error
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: web_image:latest
+    ports:
+      - 3000:3000
+    volumes:
+      # First, make a volume bookmark:
+      - /home/node/app/node_modules
+      - .:/home/node/app
+
+  web-test:
+    image: web_image:latest
+
+    # no need for ports.
+    volumes:
+      - /home/node/app/node_modules
+      - .:/home/node/app
+    ## Override the image startup command:
+    command: ["npm", "run", "test"]
